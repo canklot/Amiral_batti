@@ -1,0 +1,324 @@
+//#include "stdafx.h"
+#include <iostream>
+#include <stdlib.h>
+#include <cstdlib>
+#include <ctime>
+#include <string>
+#include <windows.h>
+using namespace std;
+//------------------------------------Global deðiþkenler---------------------------------------------------------------------
+int durumbilgisayar;
+int durumoyuncu;
+
+char oyuncuhafizavegoruntu[10][10] = {
+
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+
+    };
+    char bilgisayarhafiza[10][10] = {
+
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+
+    };
+    char bilgisayargoruntu[10][10] = {
+
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+        { '-','-','-','-','-','-','-','-','-','-' },
+
+    };
+//---------------------------------------------------------------------------------------------------------------------------
+void temasec(){
+    temabas:
+cout<<"--LUTFEN TEMA SECINIZ--";
+
+    for(int i=0;i<15;i++){
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),i);
+    cout <<"--------"<<i<<"-------- YEDI DENIZI FETIH EDICEM!" << endl;}
+    int tematercih; cin>>tematercih; cout<<endl<<endl;
+
+if(tematercih>14){cout<<"------Hatali giris(satir-sutun))-----";system("cls"); goto temabas;}
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),tematercih);
+    cout<<" Tema "<<tematercih<<" olarak ayarlandi"<<endl<<endl<<endl<<endl;
+
+
+
+}
+//---------------------------------------------------------------------------------------------------------------------------------
+void welcome(){cout<<"-----------AMIRAL BATTI OYUNUNA HOSGELINIZ-----------"<<endl<<endl;
+system("cls");
+cout<<"Amiral batti oyunu 2 kisi ile oynanir.Bir taraf insan oyuncu bir taraf ise bilgisayar oyuncudur."<<endl;
+			cout<<"2 tarafa da 10x10 dizisi buyuklugunde deniz(alan) hakki verilir"<<endl;
+			cout<<"Bilgisayar oyuncunun gemi yerlesimi ve atislari rastgeledir ve denizini goremezsiniz"<<endl;
+			cout<<"Bu alana size verilen dizi boyutunda gemilerinizi belirli kurallara gore yerlestirmeniz istenir."<<endl<<"Her gemi vurdugunuzda bip sesi duyacaksiniz"<<endl<<endl;
+
+cout<<"------BASLICA KURALLAR-----"<<endl<<endl;
+			cout<<"1-Yerlestirilen gemi diger gemilere belirli bir uzaklikta yerlestirilir"<<endl;
+			cout<<"2-Atis yapildiginda,karsi tarafin gemisinin bir parcasini vurdugunuzda H bosa atis yaptiginizda M yazar"<<endl;
+			cout<<"3-Gemilerin hepsi imha olduktan sonra kazanan belli olur,saglam gemileri ekranda goremezsiniz"<<endl;
+			cout<<"3-Yatay yerlestirme yukardan assagi; dikey yerlestirme yukardan assagidir sekildedir"<<endl;
+			cout<<"4-sirasi ile 5-4-3-3-2 buyuklugunde gemiler yerlestirilecek"<<endl<<endl;
+			system("pause");
+			system("cls");
+
+
+
+}
+//---------------------------------------------------------------------------------------------------------------------------
+void diziyazdir(char newdizi[][10],int boyut1,int boyut2,string baslik){
+
+
+    cout<<endl<<"-----"<<baslik<<"------"<<endl<<endl;
+    cout<<"  0"<<" 1"<<" 2"<<" 3"<<" 4"<<" 5"<<" 6"<<" 7"<<" 8"<<" 9";
+for(int i=0;i<boyut2;i++){
+cout<<endl<<i;
+for(int j=0;j<boyut1;j++){
+cout<<" ";
+cout<<newdizi[i][j];}}
+        cout<<endl;}
+    //---------------------------------------------------------------------------------------------------------------------
+void gemiyerlestir(char newdizi[10][10],int gemiboyutu){
+gemibasla:
+cout<<endl<<"Gemilerinizi yerlestirmek uzeresiniz "<<endl<<gemiboyutu<<" uzunlugunda geminizi yerlestirmek icin yon secin. DIKEY konumlandirmak icin 1 ,YATAY mevzilendirmek icin 2 giriniz"<<endl;
+int yon; cin>>yon;
+if(yon!=1 && yon!=2){cout<<"----Hatali giris (Dik yatay)----"<<endl;goto gemibasla;}
+cout<<"Lutfen geminizin baslangic koordinatlarini giriniz.Once SATIR sonra SUTUN"<<endl;
+int satir;int sutun; cin>>satir>>sutun;
+//if(!(satir<0)&&!(satir>9)&&!(sutun<0)&&!(sutun>9)){cout<<"------Hatali giris(satir-sutun))-----"; goto gemibasla;}
+if(satir<0){cout<<"------Hatali giris(satir-sutun))-----"; goto gemibasla;}
+if(satir>9){cout<<"------Hatali giris(satir-sutun))-----"; goto gemibasla;}
+if(sutun<0){cout<<"------Hatali giris(satir-sutun))-----"; goto gemibasla;}
+if(sutun>9){cout<<"------Hatali giris(satir-sutun))-----"; goto gemibasla;}
+if(yon==1){if(satir+gemiboyutu>10){cout<<"------Hatali giris(geminin boyutu))-----"; goto gemibasla;}}
+if(yon==2){if(sutun+gemiboyutu>10){cout<<"------Hatali giris(geminin boyutu))-----"; goto gemibasla;}}
+
+//---------yan yana kontrol baþ-----
+int satir3=satir; int sutun3=sutun;
+satir3--; sutun3--;
+int satir4=satir3; int sutun4=sutun3;
+if(yon==1){
+int i=0;
+for1:
+satir4=satir3;
+int j=0;
+rof:
+        if(sutun4<0){sutun4++;i++;}
+        if(sutun4>9){sutun4--;i++;}
+        if(satir4<0){satir4++;j++;}
+        if(satir4>9){satir4--;}
+    if(newdizi[satir4][sutun4]=='<'){cout<<"buraya koyamazsin"<<endl;goto gemibasla;}
+    satir4++;
+    j++;
+    if(j<gemiboyutu+2){goto rof;}
+    sutun4++;
+    i++;
+    if(i<3){goto for1;}
+    }
+
+if(yon==2){
+int bn=0;
+durak1:
+    sutun4=sutun3;
+    int j=0;
+    rof2:
+        if(satir4<0){satir4++;bn++;}
+        if(satir4>9){satir4--;bn++;}
+    if(sutun4<0){sutun4++;j++;}
+    if(sutun4>9){sutun4--;}
+    if(newdizi[satir4][sutun4]=='<'){cout<<"buraya koyamazsin"<<endl;goto gemibasla;}
+    sutun4++;
+    j++;
+    if(j<gemiboyutu+2){goto rof2;}
+    satir4++;
+    bn++;
+    if(bn<2){goto durak1;}      //diktede 3ü iki yap
+    }
+//---------yan yana kontrol son-----
+if(yon==1){cout<<"dik secildi"<<endl;
+        for(int c=0;c<gemiboyutu;c++){
+            newdizi[satir][sutun]='<';
+            satir++; }}
+else if(yon==2){cout<<"yatay secildi"<<endl;
+        for(int c=0;c<gemiboyutu;c++){
+            newdizi[satir][sutun]='<';
+            sutun++;
+        }}
+   }
+
+   //--------------------------------------------------------------------------------------------------------------------------
+
+   void gemiyerlestirbilgisayar(char newdizi[10][10],int gemiboyutu){
+       gemipc:
+int yon=1+(rand()%2);
+int satir=rand()%10;
+int sutun=rand()%10;
+if(satir+gemiboyutu>10){goto gemipc;}
+if(sutun+gemiboyutu>10){goto gemipc;}
+//------------pc yanyana kontrol---
+int satir3=satir; int sutun3=sutun;
+satir3--; sutun3--;
+int satir4=satir3; int sutun4=sutun3;
+if(yon==1){
+int i=0;
+for4:
+satir4=satir3;
+int j=0;
+rof3:
+        if(sutun4<0){sutun4++;i++;}
+        if(sutun4>9){sutun4--;i++;}
+        if(satir4<0){satir4++;j++;}
+        if(satir4>9){satir4--;}
+    if(newdizi[satir4][sutun4]=='<'){goto gemipc;}
+    satir4++;
+    j++;
+    if(j<gemiboyutu+2){goto rof3;}
+    sutun4++;
+    i++;
+    if(i<3){goto for4;}
+    }
+
+if(yon==2){
+int bn=0;
+durak4:
+    sutun4=sutun3;
+    int j=0;
+    rof4:
+        if(satir4<0){satir4++;bn++;}
+        if(satir4>9){satir4--;bn++;}
+    if(sutun4<0){sutun4++;j++;}
+    if(sutun4>9){sutun4--;}
+    if(newdizi[satir4][sutun4]=='<'){goto gemipc;}
+    sutun4++;
+    j++;
+    if(j<gemiboyutu+2){goto rof4;}
+    satir4++;
+    bn++;
+    if(bn<2){goto durak4;}      //diktede 3ü iki yap
+    }
+
+
+
+//---------pc kontrol son-----
+if(yon==1){
+    for(int c=0;c<gemiboyutu;c++){
+        newdizi[satir][sutun]='<';
+        satir++; }}
+if(yon==2){
+    for(int c=0;c<gemiboyutu;c++){
+        newdizi[satir][sutun]='<';
+        sutun++;
+    }}}
+
+   //------------------------------------------------------------------------------------------------------------------------
+   void ateset(){
+       vurdun:
+   diziyazdir(bilgisayargoruntu,10,10,"bilgisayar goruntu");
+   cout<<endl<<"Dusman denizine ates edilecek kordinatlari girin. Once satir sonra sutun"<<endl;
+   int kordinatsatir;
+   try {
+   cin>>kordinatsatir;
+   } catch (exception e) {
+   cout << "lorem";
+   }
+    int kordinatsutun; cin>>kordinatsutun;
+   if(kordinatsatir<0){cout<<"------Hatali giris(satir-sutun))-----"; goto vurdun;}
+if(kordinatsatir>9){cout<<"------Hatali giris(satir-sutun))-----"; goto vurdun;}
+if(kordinatsutun<0){cout<<"------Hatali giris(satir-sutun))-----"; goto vurdun;}
+if(kordinatsutun>9){cout<<"------Hatali giris(satir-sutun))-----"; goto vurdun;}
+   if(bilgisayarhafiza[kordinatsatir][kordinatsutun]=='M'){cout<<"----BURAYA DAHA ONCE DAHA ONCE ATES ETTIN ZATEN---"<<endl;goto vurdun;}
+   if(bilgisayarhafiza[kordinatsatir][kordinatsutun]=='<'){cout<<"----DUSMANI TAM 12'DEN VURDUNUZ---"<< '\a'<<endl;bilgisayargoruntu[kordinatsatir][kordinatsutun]='H'; bilgisayarhafiza[kordinatsatir][kordinatsutun]='H';goto vurdun;}
+   if(bilgisayarhafiza[kordinatsatir][kordinatsutun]=='-'){cout<<"----AHH ISKALADIN BIR DAHA DENE---"<<endl;bilgisayargoruntu[kordinatsatir][kordinatsutun]='M';bilgisayarhafiza[kordinatsatir][kordinatsutun]='M';}
+   system("pause");
+   system("cls");
+   }
+   //--------------------------------------------------------------------------------------------------------------------------
+   void atesetbilgisayar(){
+       vurdun:
+   int kordinatsatir=rand()%10; int kordinatsutun=rand()%10;
+   if(oyuncuhafizavegoruntu[kordinatsatir][kordinatsutun]=='M'){cout<<"vurdun"<<endl;goto vurdun;}
+   if(oyuncuhafizavegoruntu[kordinatsatir][kordinatsutun]=='<'){cout<<endl<<"bilgisayar vurdu"<<endl;oyuncuhafizavegoruntu[kordinatsatir][kordinatsutun]='H';goto vurdun;}
+   if(oyuncuhafizavegoruntu[kordinatsatir][kordinatsutun]=='-'){cout<<endl<<"bilgisayar iskaladi"<<endl;oyuncuhafizavegoruntu[kordinatsatir][kordinatsutun]='M';}
+   }
+
+   //-------------------------------------------------------------------------------------------------------------------------
+   int hayattami(char newdizi[][10],int boyut1,int boyut2){
+    for(int i=0;i<boyut2;i++){
+    for(int j=0;j<boyut1;j++){
+    if (newdizi[i][j]=='<'){return 1;}
+    // else{cout<<"kaybetti";return 0;}
+            }}
+   return 0;
+   }
+   //---------------------------------------------------------------------------------------------------------------------------
+
+//----------------------------------------------------------------------------------------------------------------------------
+	int main() {
+srand(time(0));
+temasec();
+welcome();
+diziyazdir(oyuncuhafizavegoruntu,10,10,"oyuncunun denizi");
+
+gemiyerlestir(oyuncuhafizavegoruntu,5);system("cls");
+diziyazdir(oyuncuhafizavegoruntu,10,10,"oyuncunun denizi");
+gemiyerlestir(oyuncuhafizavegoruntu,4);system("cls");
+diziyazdir(oyuncuhafizavegoruntu,10,10,"oyuncunun denizi");
+gemiyerlestir(oyuncuhafizavegoruntu,3);system("cls");
+diziyazdir(oyuncuhafizavegoruntu,10,10,"oyuncunun denizi");
+gemiyerlestir(oyuncuhafizavegoruntu,3);system("cls");
+diziyazdir(oyuncuhafizavegoruntu,10,10,"oyuncunun denizi");
+gemiyerlestir(oyuncuhafizavegoruntu,2);system("cls");
+diziyazdir(oyuncuhafizavegoruntu,10,10,"oyuncunun denizi");
+/////////////////////
+gemiyerlestirbilgisayar(bilgisayarhafiza,5);
+gemiyerlestirbilgisayar(bilgisayarhafiza,4);
+gemiyerlestirbilgisayar(bilgisayarhafiza,3);
+gemiyerlestirbilgisayar(bilgisayarhafiza,3);
+gemiyerlestirbilgisayar(bilgisayarhafiza,2);
+diziyazdir(bilgisayarhafiza,10,10,"pc hafiza");
+///////////////////
+insanates:
+ateset();
+//diziyazdir(bilgisayargoruntu,10,10,"bilgisayar goruntu");
+if(!hayattami(bilgisayarhafiza,10,10)){goto sondurum;}
+atesetbilgisayar();
+diziyazdir(oyuncuhafizavegoruntu,10,10,"oyuncu");
+if(!hayattami(oyuncuhafizavegoruntu,10,10)){goto sondurum;}
+goto insanates;
+
+//////////////////////////////////////////////////////////////////////////////////
+sondurum:
+    if(!hayattami(bilgisayarhafiza,10,10)){cout<<"------KAZANDINIZ--------";}
+    if(!hayattami(oyuncuhafizavegoruntu,10,10)){cout<<"--------KAYBETTINIZ-------";}
+    cout<<"cikmak icin 3 tusa basin";
+    char qt; cin>>qt;cin>>qt;cin>>qt;
+
+
+		return 0;
+
+		
+	}
